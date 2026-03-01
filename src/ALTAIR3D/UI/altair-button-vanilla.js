@@ -1,36 +1,34 @@
 import * as THREE from 'three';
-//import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 import { noise, negativeNoise } from '../utils/perlinNoise.js';
 
 export class ButtonVanilla {
-    constructor(name, color = 0, viewOffset = 'none') {
-        // 1.Variables
-        this.name = name;
+    constructor(color = 0) {
+        // 1. Variables
         this.objectType = 'button';
-        this.viewOffset = viewOffset;
-        let positionNum = [0, 0, 0];
-        let scaleNum = 1.0;
-        let chooseColor = color;
+
+        this.color = color;
         const colorTypeOne = [0x8CD5FF, 0xFFFFFF, 0x339CFF, 0xDCDCDC];
         const colorTypeTwo = [0xDA7272, 0xFFFFFF, 0xD765FF, 0xDCDCDC];
-        const colorTypeThree = [];
-        const colorList = [colorTypeOne, colorTypeTwo, colorTypeThree];
+        let colorCustom = {};
+        this.colorTypeList = [colorTypeOne, colorTypeTwo, colorCustom];
+
+        let scaleNum = 1.0;
         let clickDetect = false;
         const initialPositions = []; // store particle initial position
 
-        // 2.Mesh
+        // 2. Meshes
         const arrowGeometry = new THREE.CylinderGeometry(0, 0.5, 1, 6, 1);
-        const arrowMaterial = new THREE.MeshPhongMaterial({ color: colorList[chooseColor][0] });
+        const arrowMaterial = new THREE.MeshPhongMaterial({ color: this.colorTypeList[color][0] });
         let arrow = new THREE.Mesh(arrowGeometry, arrowMaterial);
         this.arrow = arrow;
 
         const geometry = new THREE.SphereGeometry(1, 32, 32);
-        const material = new THREE.MeshMatcapMaterial({ color: colorList[chooseColor][1], visible: false });
+        const material = new THREE.MeshMatcapMaterial({ color: this.colorTypeList[color][1], visible: false });
         const sphere = new THREE.Mesh(geometry, material);
         this.mainMesh = sphere;
 
         const particleGeometry = new THREE.BufferGeometry();
-        const particleMaterial = new THREE.PointsMaterial({ color: colorList[chooseColor][2], size: 0.1 });
+        const particleMaterial = new THREE.PointsMaterial({ color: this.colorTypeList[color][2], size: 0.1 });
         const particleCount = 2000;
         const particles = new Float32Array(particleCount * 3);
 
@@ -66,41 +64,35 @@ export class ButtonVanilla {
             });
         }
 
-        // 3.Light
+        // 3. Lights
 
-        // 4.Event Listener
-        function whenMouseOver() {
-            arrow.material.color.setHex( colorList[chooseColor][3] );
-        }
-        this.whenMouseOver = whenMouseOver;
+        // 4. Event Listeners
+        this.whenMouseOver = () => {
+            arrow.material.color.setHex( this.colorTypeList[color][3] );
+        };
 
-        function notMouseOver() {
-            arrow.material.color.setHex( colorList[chooseColor][0] );
-        }
-        this.notMouseOver = notMouseOver;
+        this.notMouseOver = () => {
+            arrow.material.color.setHex( this.colorTypeList[color][0] );
+        };
 
-        function whenClick() {
+        this.whenClick = () => {
             clickDetect = true;
             elapsedTime = 0;
-        }
-        this.whenClick = whenClick;
+        };
 
         this.whenMouseMove = (x, y) => {};
 
-        let customizeWhenMouseOver = () => {};
-        this.customizeWhenMouseOver = customizeWhenMouseOver;
+        this.customizeWhenMouseOver = () => {};
 
-        let customizeNotMouseOver = () => {};
-        this.customizeNotMouseOver = customizeNotMouseOver;
+        this.customizeNotMouseOver = () => {};
 
-        let customizeWhenClick = () => {};
-        this.customizeWhenClick = customizeWhenClick;
+        this.customizeWhenClick = () => {};
 
-        // 5.Animate
+        // 5. Animation
         let returnDuration = 10;
         const returnSpeed = 0.1;
         let elapsedTime = 0;
-        function animateFunc() {
+        this.animateFunc = () => {
             arrow.rotation.x += 0.01;
             arrow.rotation.y += 0.01;
 
@@ -205,10 +197,9 @@ export class ButtonVanilla {
             }
 
             particleGeometry.attributes.position.needsUpdate = true;
-        }
-        this.animateFunc = animateFunc;
+        };
 
-        // 10.Function
+        // 6. Functions
         function lerp(t, a, b) {
             return a + t * (b - a);
         }
@@ -222,20 +213,20 @@ export class ButtonVanilla {
         this.changePosition = changePosition;
 
         //function for scale
-        function changeScale(scale) {
-            scaleNum = scale;
-            this.mainMesh.scale.set(scale, scale, scale);
-            this.arrow.scale.set(scale, scale, scale);
-            this.particleSystem.scale.set(scale, scale, scale);
+        function changeScale(x, y, z) {
+            if ( x === y && y === z ) scaleNum = x;
+
+            this.mainMesh.scale.set(x, y, z);
+            this.arrow.scale.set(x, y, z);
+            this.particleSystem.scale.set(x, y, z);
             this.particleSystem.material.size = 0.1 * scaleNum;
         }
         this.changeScale = changeScale;
     }
-
-    // 11.Export
-    //tools
+    
     async getMeshes() {
         return {
+            // main mesh must be named "this.mainMesh", for raycaster judging.
             mainMesh: this.mainMesh,
             arrow: this.arrow,
             particleSystem: this.particleSystem,
@@ -260,4 +251,16 @@ export class ButtonVanilla {
             return this.notMouseOver;
         }
     }
+
+    colorSet(color) {}
+
+    scaleSet(x, y, z) {
+        this.changeScale(x, y, z);
+    }
+
+    positionSet(x, y, z) {
+        this.changePosition(x, y, z);
+    }
+
+    rotationSet(x, y, z) {}
 }
