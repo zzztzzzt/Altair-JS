@@ -49,6 +49,14 @@ describe('ButtonVanilla Core Functionality Testing', () => {
     expect(button.particleSystem.scale.toArray()).toEqual([2, 2, 2]);
   });
 
+  it('changeScale should update particle size with uniform scale', () => {
+    const button = new ButtonVanilla(0);
+
+    button.changeScale(2, 2, 2);
+
+    expect(button.particleSystem.material.size).toBeCloseTo(0.2);
+  });
+
   it('scaleSet and positionSet should delegate to changeScale/changePosition', () => {
     const button = new ButtonVanilla(0);
     button.positionSet(10, 20, 30);
@@ -72,5 +80,20 @@ describe('ButtonVanilla Core Functionality Testing', () => {
 
     expect(button.getAnimateFunc()).toBe(button.animateFunc);
     expect(typeof button.getAnimateFunc()).toBe('function');
+  });
+
+  it('animateFunc should rotate arrow and mark particle position as updated', () => {
+    const button = new ButtonVanilla(0);
+    const animate = button.getAnimateFunc();
+    const prevRotX = button.arrow.rotation.x;
+    const prevRotY = button.arrow.rotation.y;
+    const positionAttr = button.particleSystem.geometry.attributes.position;
+    const prevVersion = positionAttr.version;
+
+    animate();
+
+    expect(button.arrow.rotation.x).toBeGreaterThan(prevRotX);
+    expect(button.arrow.rotation.y).toBeGreaterThan(prevRotY);
+    expect(positionAttr.version).toBeGreaterThan(prevVersion);
   });
 });
