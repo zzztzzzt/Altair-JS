@@ -12,6 +12,7 @@ export class ClickTrackingLilac {
         this.groundY = -2;
         this.bounceDamping = 0.78;
         this.clickLock = false;
+        this.ballsLifetimeMs = 4500;
 
         // 2. Mesh
         this.ballGroup = new THREE.Group();
@@ -119,7 +120,7 @@ export class ClickTrackingLilac {
                 this.ballGroup.add(ball);
             }
 
-            setTimeout(clearBalls, 4500);
+            setTimeout(clearBalls, this.ballsLifetimeMs);
         }
 
         function randomPurpleColor() {
