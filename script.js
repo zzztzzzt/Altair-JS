@@ -3,15 +3,15 @@ import { setup } from "./src/setup";
 import {
     MovieNebula,
     MovieWater,
+    MovieStarRing,
 } from "./src/components";
-import { MovieStarRing } from "./src/ALTAIR3D/UI/altair-movie-star-ring";
 
 import examplePureSky from '@hdr/example_puresky_1k.hdr';
 
 const basicScene = setup.jsVer("three-area", "three-area-css");
 
-
 const envMap = await basicScene.loadEnvironment(examplePureSky, 0, Math.PI * 5 / 9, 0);
+
 
 const ocean = new MovieWater(basicScene, envMap);
 basicScene.create(ocean);

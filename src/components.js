@@ -10,3 +10,4 @@ export { CursorTrailLilac } from "@altair3d/UI/altair-cursor-trail-lilac.js";
 
 export { MovieWater } from "@altair3d/UI/altair-movie-water.js";
 export { MovieNebula } from "@altair3d/UI/altair-movie-nebula.js";
+export { MovieStarRing } from "@altair3d/UI/altair-movie-star-ring.js";

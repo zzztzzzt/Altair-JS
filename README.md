@@ -131,21 +131,40 @@ const mouseMoveAnimate = movieRuin.getListenerFunc("mousemove");
 ## Example Code
 
 ```javascript
-import * as ALTAIR from "./altair-beta";
+import * as THREE from "three";
+import { setup } from "./src/setup";
+import {
+    MovieNebula,
+    MovieWater,
+    MovieStarRing,
+} from "./src/components";
 
-const basicScene = ALTAIR.setup.jsVer("three-area", "three-area-css");
+import examplePureSky from '@hdr/example_puresky_1k.hdr';
 
-const envMap = await basicScene.loadEnvironment('/ALTAIR3D/UI/hdr/example_puresky_1k.hdr', 0, Math.PI * 5 / 9, 0);
+const basicScene = setup.jsVer("three-area", "three-area-css");
 
-const ocean = new ALTAIR.MovieWater(basicScene, envMap);
+const envMap = await basicScene.loadEnvironment(examplePureSky, 0, Math.PI * 5 / 9, 0);
+
+
+const ocean = new MovieWater(basicScene, envMap);
 basicScene.create(ocean);
 
-const movieObjOne = new ALTAIR.MovieRuinOne();
-movieObjOne.scaleSet(13, 13, 13);
-movieObjOne.positionSet(8, -3.5, -50);
-movieObjOne.rotationSet(0, Math.PI / 12, 0);
 
-basicScene.create(movieObjOne);
+const nebula = new MovieNebula();
+basicScene.create(nebula);
+
+nebula.scaleSet(10, 10, 10);
+nebula.positionSet(0, 0, -120);
+nebula.rotationSet(Math.PI / 6, 0, -Math.PI / 4);
+
+
+const starRing = new MovieStarRing();
+basicScene.create(starRing);
+
+await starRing.loadModelAsync();
+starRing.scaleSet(10, 10, 10);
+starRing.positionSet(0, 0, -120);
+starRing.rotationSet(Math.PI / 6, 0, -Math.PI / 4);
 ```
 
 ## Version History
