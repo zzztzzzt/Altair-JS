@@ -26,7 +26,7 @@ Altair-JS uses Three.js for 3D graphics rendering. Three.js licensed under the M
 
 Altair-JS uses Vite for development, and Vitest for unit testing. Vite & Vitest licensed under the MIT License.
 
-![1.3showcase](https://github.com/zzztzzzt/Altair-JS/blob/main/showcase/real-showcase-four.webp)
+![2.0showcase](https://github.com/zzztzzzt/Altair-JS/blob/main/showcase/real-showcase-five.webp)
 <br><br>
 
 ## Installation
@@ -149,6 +149,9 @@ basicScene.create(movieObjOne);
 ```
 
 ## Version History
+
+#### V 2.0 (2026.03) - High-fidelity ripple and wave effects + Real-time Reflections. Support for HDRIs to achieve cinematic lighting.
+![2.0showcase](https://github.com/zzztzzzt/Altair-JS/blob/main/showcase/real-showcase-five.webp)
 
 #### V 1.3 (2025.07) - A consolidation of previous features. An expanded library of pre-built 3D UI components & Animations for faster development.
 ![1.3showcase](https://github.com/zzztzzzt/Altair-JS/blob/main/showcase/real-showcase-four.webp?v=2)
