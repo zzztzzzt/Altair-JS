@@ -6,10 +6,19 @@ export class CursorTrailAurora {
         this.objectType = 'cursor-trail';
 
         this.color = color;
-        let colorTypeOne = {};
-        let colorTypeTwo = {};
+        const colorTypeOne = {
+            "core": 0x9cf7ff,
+            "trail-base": 0x77b6ff,
+            "trail-accent": 0xb4fff6
+        };
+        const colorTypeTwo = {
+            "core": 0x969696,
+            "trail-base": 0x424242,
+            "trail-accent": 0x969696
+        };
         let colorCustom = {};
         this.colorTypeList = [colorTypeOne, colorTypeTwo, colorCustom];
+        const palette = this.colorTypeList[color] || this.colorTypeList[0];
 
         this.trailHistory = Array(45).fill().map(() => new THREE.Vector3());
         this.smoothedVelocity = new THREE.Vector3();
@@ -20,8 +29,8 @@ export class CursorTrailAurora {
         this.elapsedTime = 0;
         this.clickBurst = 0;
 
-        this.baseColor = new THREE.Color(0x88ffff);
-        this.accentColor = new THREE.Color('#cd8cff');
+        this.baseColor = new THREE.Color(palette["trail-base"]);
+        this.accentColor = new THREE.Color(palette["trail-accent"]);
 
         // 2. Meshes
         const mainGroup = new THREE.Group();
@@ -35,7 +44,7 @@ export class CursorTrailAurora {
 
         const coreGeo = new THREE.SphereGeometry(0.4, 32, 32);
         const coreMat = new THREE.MeshBasicMaterial({
-            color: 0x88ffff,
+            color: palette["core"],
             transparent: true,
             opacity: 0.9,
             blending: THREE.AdditiveBlending
@@ -51,7 +60,7 @@ export class CursorTrailAurora {
 
         for (let i = 0; i < trailCount; i++) {
             const mat = new THREE.MeshPhongMaterial({
-                color: 0x88ffff,
+                color: palette["trail-base"],
                 transparent: true,
                 opacity: 0,
                 blending: THREE.AdditiveBlending,
@@ -211,7 +220,19 @@ export class CursorTrailAurora {
         }
     }
 
-    colorSet(color) { this.color = color; }
+    colorSet(color) {
+        const palette = this.colorTypeList[color];
+        if (!palette) return;
+
+        this.color = color;
+        this.baseColor.set(palette["trail-base"]);
+        this.accentColor.set(palette["trail-accent"]);
+        this.core.material.color.set(palette["core"]);
+
+        this.trailMeshes.forEach(mesh => {
+            mesh.material.color.set(palette["trail-base"]);
+        });
+    }
 
     scaleSet(x, y, z) { this.mainMesh.scale.set(x, y, z); this.visualGroup.scale.set(x, y, z); }
 
