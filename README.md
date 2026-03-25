@@ -10,7 +10,7 @@
 
 <img src="https://github.com/zzztzzzt/Altair-JS/blob/main/logo/logo.png" alt="altair-logo" style="height: 280px; width: auto;" />
 
-### Altair-JS is a package for creating 3D UI Interaction & Beautiful 3D Scene.
+### Altair-JS - Package for creating 3D UI Interaction & Beautiful 3D Scene.
 
 IMPORTANT : This project is still in the development and testing stages, licensing terms may be updated in the future. Please don't do any commercial usage currently.
 
@@ -35,6 +35,7 @@ Altair-JS uses Vite for development, and Vitest for unit testing. Vite & Vitest 
 1. Install Node.js and git clone this project.
 
 2. Install Three.js and Vite using terminal in this project folder.
+
 ```cmd
 npm install three
 ```
@@ -43,92 +44,120 @@ npm install --save-dev vite
 ```
 
 3. Run `npx vite` in terminal and then open the URL that Vite gives you.
+
 ```cmd
 npx vite
 ```
 
-4. You'll see a URL in your terminal. You can open this URL in your browser.
+4. You'll see a URL in your terminal. Open this URL in your browser.
 
 ### Embed Altair-JS to your project ( for quick use ignore this )
 1. Install Node.js and git clone this project.
 
 2. Install Three.js using terminal in your project folder.
+
 ```cmd
 npm install three
 ```
 
-3. Put `altair-beta.js` and `ALTAIR3D folder` into your project folder.
+3. Put `setup.js`, `components.js` and `ALTAIR3D folder` into your project `/src` folder.
 
-4. Import Altair-JS to your javascript / Three-js code
+4. Import setup-tool & 3D components into your javascript / Three-js code
+
 ```javascript
-import * as ALTAIR from "./altair-beta";
+import { setup } from "./src/setup";
 ```
 
-5. For detail usage please see below steps.
+```javascript
+import {
+    3DComponent-1,
+    3DComponent-2,
+    3DComponent-3,
+    // ...
+} from "./src/components";
+```
+
+5. For detail usage please see below topics.
 
 ## How To Use
 
-### ( for pure Three.js usage, jump to next step )
+### ( for pure Three.js usage, jump to next topic )
 
 ### 1. create basic 3D Space
+
 add 2 `div`, one for 3D render and one for CSS3D
+
 ```html
 <div id="three-area"></div>
 <div id="three-area-css"></div>
 ```
+
 setup basic scene in javascript
+
 ```javascript
-import * as ALTAIR from "./altair-beta";
-const basicScene = ALTAIR.setup.jsVer("three-area", "three-area-css");
+import { setup } from "./src/setup";
+const basicScene = setup.jsVer("three-area", "three-area-css");
 ```
 
 ### 2. add 3D UI Conponent
+
 ```javascript
-const movieRuin = new ALTAIR.MovieRuinOne();
-basicScene.create(movieRuin);
+import {
+    MovieNebula,
+} from "./src/components";
+
+const nebula = new MovieNebula();
+basicScene.create(nebula);
 ```
 
-### 3. set the 3D UI Components position, rotation & scaling
+### 3. set the 3D UI Component scaling, position & rotation
+
 ```javascript
-ruin1.scaleSet(13, 13, 13);
-ruin1.positionSet(8, -3.5, -50);
-ruin1.rotationSet(0, Math.PI / 12, 0);
+nebula.scaleSet(10, 10, 10);
+nebula.positionSet(0, 0, -120);
+nebula.rotationSet(Math.PI / 6, 0, -Math.PI / 4);
 ```
 ( wip : color-setting & clean self-removing )
 
 ## Directly use with Three.js ( for API usage ignore this )
-### 1. import Altair-JS & new a 3D UI Component
+
+### 1. new a 3D UI Component
+
 ```javascript
-import * as ALTAIR from "./altair-beta";
-const movieRuin = new ALTAIR.MovieRuinOne();
+import {
+    MovieNebula,
+} from "./src/components";
 ```
 
-### 2. add Components to your Three.js scene
+### 2. add Component to your Three.js scene
+
 ```javascript
 // get all meshes ( JS object format )
-const meshes = await movieRuin.getMeshes();
+const nebula = new MovieNebula();
+const meshes = await nebula.getMeshes();
 Object.values(meshes).forEach(mesh => {
     scene.add(mesh);
 });
 ```
 
 ### 3. add component's animations to your Three.js code
+
 ```javascript
 // add this to animate function
-const animateFunc = movieRuin.getAnimateFunc();
+const animateFunc = nebula.getAnimateFunc();
 
 // add these to your Event Listener
 // please setup Three.js RayCaster first, to judge the mouse intersects
-const clickAnimate = movieRuin.getListenerFunc("click");
+const clickAnimation = nebula.getListenerFunc("click");
 
-const mouseInAnimate = movieRuin.getListenerFunc("mouseover");
+const mouseInAnimation = nebula.getListenerFunc("mouseover");
 
-const mouseOutAnimate = movieRuin.getListenerFunc("notmouseover");
+const mouseOutAnimation = nebula.getListenerFunc("notmouseover");
 
-const mouseMoveAnimate = movieRuin.getListenerFunc("mousemove");
+const mouseMoveAnimation = nebula.getListenerFunc("mousemove");
 ```
 
-## Example Code
+## Full Example Code
 
 ```javascript
 import * as THREE from "three";
