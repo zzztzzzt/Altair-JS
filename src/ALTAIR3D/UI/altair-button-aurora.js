@@ -110,18 +110,20 @@ export class ButtonAurora {
         this.customizeWhenClick = () => {};
 
         // 5. Animation
-        this.animateFunc = () => {
-            const time = Date.now() * 0.001;
+        this.animateFunc = (delta, elapsed) => {
+            const frameFactor = delta * 60;
+            const time = elapsed;
             const hoverTarget = isHovered ? 1 : 0;
 
             // Core Animation
-            this.core.material.emissiveIntensity = THREE.MathUtils.lerp(this.core.material.emissiveIntensity, 1.5 + hoverTarget * 1.5, 0.08);
-            this.core.rotation.x += 0.01;
-            this.core.rotation.y += 0.015;
+            const emissiveLerpAlpha = 1 - Math.pow(1 - 0.08, frameFactor);
+            this.core.material.emissiveIntensity = THREE.MathUtils.lerp(this.core.material.emissiveIntensity, 1.5 + hoverTarget * 1.5, emissiveLerpAlpha);
+            this.core.rotation.x += 0.6 * delta;
+            this.core.rotation.y += 0.9 * delta;
 
             // The entire track rotates
-            this.ring.rotation.z += 0.008 + hoverTarget * 0.01;
-            this.ringTwo.rotation.x -= 0.01 + hoverTarget * 0.01;
+            this.ring.rotation.z += (0.48 + hoverTarget * 0.6) * delta;
+            this.ringTwo.rotation.x -= (0.6 + hoverTarget * 0.6) * delta;
 
             // lerp scaling and rotation of individual tetrahedrons within the orbit
             const allOrbitChildren = [...this.ring.children, ...this.ringTwo.children];
@@ -129,20 +131,21 @@ export class ButtonAurora {
                 const data = orbitDataList[i];
                 if (data) {
                     if (Math.random() > 0.98) data.targetScale = 0.6 + Math.random() * 1.4;
-                    const s = THREE.MathUtils.lerp(child.scale.x, data.targetScale, 0.05);
+                    const scaleLerpAlpha = 1 - Math.pow(1 - 0.05, frameFactor);
+                    const s = THREE.MathUtils.lerp(child.scale.x, data.targetScale, scaleLerpAlpha);
                     child.scale.set(s, s, s);
-                    child.rotation.x += 0.02;
-                    child.rotation.y += 0.02;
+                    child.rotation.x += 1.2 * delta;
+                    child.rotation.y += 1.2 * delta;
                 }
             });
 
             // Stardust Fragments Animation
-            burstStrength *= 0.93;
+            burstStrength *= Math.pow(0.93, frameFactor);
             for (let i = 0; i < this.shards.children.length; i++) {
                 const shard = this.shards.children[i];
                 const data = shardDataList[i];
                 
-                data.theta += data.speed * (1 + burstStrength * 3);
+                data.theta += data.speed * frameFactor * (1 + burstStrength * 3);
                 const radius = data.baseRadius + Math.sin(time * 2 + data.wobble) * 0.1 + burstStrength * 0.5;
                 
                 shard.position.set(
@@ -152,14 +155,15 @@ export class ButtonAurora {
                 );
 
                 if (Math.random() > 0.98) data.targetScale = 0.4 + Math.random() * 1.6;
-                const ss = THREE.MathUtils.lerp(shard.scale.x, data.targetScale, 0.05);
+                const shardScaleLerpAlpha = 1 - Math.pow(1 - 0.05, frameFactor);
+                const ss = THREE.MathUtils.lerp(shard.scale.x, data.targetScale, shardScaleLerpAlpha);
                 shard.scale.set(ss, ss, ss);
             }
 
             if (pulseProgress > 0) {
-                pulseProgress *= 0.88;
-                this.pulse.scale.multiplyScalar(1.08);
-                this.pulse.material.opacity *= 0.87;
+                pulseProgress *= Math.pow(0.88, frameFactor);
+                this.pulse.scale.multiplyScalar(Math.pow(1.08, frameFactor));
+                this.pulse.material.opacity *= Math.pow(0.87, frameFactor);
                 if (pulseProgress < 0.03) { pulseProgress = 0; this.pulse.visible = false; }
             }
         };

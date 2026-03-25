@@ -92,9 +92,10 @@ export class ButtonVanilla {
         let returnDuration = 10;
         const returnSpeed = 0.1;
         let elapsedTime = 0;
-        this.animateFunc = () => {
-            arrow.rotation.x += 0.01;
-            arrow.rotation.y += 0.01;
+        this.animateFunc = (delta) => {
+            const frameFactor = delta * 60;
+            arrow.rotation.x += 0.6 * delta;
+            arrow.rotation.y += 0.6 * delta;
 
             if (clickDetect == true) {
                 returnDuration = 3;
@@ -103,7 +104,6 @@ export class ButtonVanilla {
                 returnDuration = 1;
             }
 
-            const time = Date.now() * 0.001;
             const positions = particleGeometry.attributes.position.array;
             for (let i = 0; i < particleCount; i++) {
                 const index = i * 3;
@@ -124,9 +124,9 @@ export class ButtonVanilla {
                         noiseZ = noise(z * 0.02, x * 0.02, y * 0.02);
                     }
 
-                    positions[index] += noiseX * 0.1;
-                    positions[index + 1] += noiseY * 0.1;
-                    positions[index + 2] += noiseZ * 0.1;
+                    positions[index] += noiseX * 0.1 * frameFactor;
+                    positions[index + 1] += noiseY * 0.1 * frameFactor;
+                    positions[index + 2] += noiseZ * 0.1 * frameFactor;
                 }
 
                 if (clickDetect == false) {
@@ -139,13 +139,13 @@ export class ButtonVanilla {
                         noiseZ = noise(z * -2, x * -2, y * -2);
                     }
 
-                    positions[index] += noiseX * 0.01;
-                    positions[index + 1] += noiseY * 0.01;
-                    positions[index + 2] += noiseZ * 0.01;
+                    positions[index] += noiseX * 0.01 * frameFactor;
+                    positions[index + 1] += noiseY * 0.01 * frameFactor;
+                    positions[index + 2] += noiseZ * 0.01 * frameFactor;
                 }
             }
 
-            elapsedTime += 0.0167;
+            elapsedTime += delta;
 
             if (elapsedTime > returnDuration) {
                 // gradually move the particle back to its original position
@@ -177,7 +177,8 @@ export class ButtonVanilla {
                     let phi = Math.acos(z / radius);
 
                     // increase the rotation angle, here use time to control the rotation speed
-                    theta += 0.01; // angle increment to control the rotation speed
+                    const thetaStep = 0.6 * delta;
+                    theta += thetaStep; // angle increment to control the rotation speed
 
                     // convert polar coordinates back to Cartesian coordinates
                     x = radius * Math.sin(phi) * Math.cos(theta);
@@ -190,8 +191,8 @@ export class ButtonVanilla {
 
                     // update the initial position array at the same time
                     const { x: initialX, y: initialY, z: initialZ } = initialPositions[i];
-                    const newInitialX = initialX * Math.cos(0.01) - initialY * Math.sin(0.01);
-                    const newInitialY = initialX * Math.sin(0.01) + initialY * Math.cos(0.01);
+                    const newInitialX = initialX * Math.cos(thetaStep) - initialY * Math.sin(thetaStep);
+                    const newInitialY = initialX * Math.sin(thetaStep) + initialY * Math.cos(thetaStep);
                     initialPositions[i] = { x: newInitialX, y: newInitialY, z: initialZ };
                 }
             }

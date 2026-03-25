@@ -59,14 +59,15 @@ export class ClickTrackingStellar {
         this.customizeWhenClick = customizeWhenClick;
 
         // 5. Animate
-        this.animateFunc = () => {
+        this.animateFunc = (delta) => {
+            const frameFactor = delta * 60;
             this.boxGalaxies.forEach((boxGalaxy) => {
                 if (boxGalaxy && boxGalaxy.rotationSpeed) {
-                    boxGalaxy.rotation.y += boxGalaxy.rotationSpeed.y;
+                    boxGalaxy.rotation.y += boxGalaxy.rotationSpeed.y * frameFactor;
                 }
             });
 
-            this.boxGalaxyGroup.position.y += 0.1;
+            this.boxGalaxyGroup.position.y += 6 * delta;
         };
     }
 

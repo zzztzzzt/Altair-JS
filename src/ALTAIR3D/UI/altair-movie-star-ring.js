@@ -37,7 +37,7 @@ export class MovieStarRing {
         this.customizeWhenClick = () => {};
 
         // 5. Animation
-        this.animateFunc = () => {};
+        this.animateFunc = (delta, elapsed, timestamp) => {};
 
         // 6. Functions
     }

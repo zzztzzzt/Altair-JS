@@ -216,13 +216,8 @@ export class MovieWater {
             });
         }
 
-        let frameCount = 0;
-        const UPDATE_EVERY = 1;
-
-        const clock = new THREE.Clock();
-
-        this.animateFunc = () => {
-            const t = clock.getElapsedTime() * FPS;
+        this.animateFunc = (_delta, elapsed) => {
+            const t = elapsed * FPS;
 
             const max = FRAME_COUNT - 1;
             const cycle = max * 2;
@@ -255,24 +250,18 @@ export class MovieWater {
                 // Temporarily hide water surface, to avoid reflecting itself
                 this.mainMesh.visible = false;
                 
-                // update cube texture
-                if (frameCount % UPDATE_EVERY === 0) {
-                    this.mainMesh.visible = false;
-                    
-                    // only render the part above the water surface
-                    this.clippingPlane.constant = -waterY;
-                    this.renderer.clippingPlanes = [this.clippingPlane];
-                    this.renderer.localClippingEnabled = true;
-                    
-                    this.cubeCamera.update(this.renderer, this.scene);
-                    
-                    // close clipping planes
-                    this.renderer.clippingPlanes = [];
-                    this.renderer.localClippingEnabled = false;
-                    
-                    this.mainMesh.visible = true;
-                }
-                frameCount++;
+                this.mainMesh.visible = false;
+                
+                // only render the part above the water surface
+                this.clippingPlane.constant = -waterY;
+                this.renderer.clippingPlanes = [this.clippingPlane];
+                this.renderer.localClippingEnabled = true;
+                
+                this.cubeCamera.update(this.renderer, this.scene);
+                
+                // close clipping planes
+                this.renderer.clippingPlanes = [];
+                this.renderer.localClippingEnabled = false;
                 
                 this.mainMesh.visible = true;
             }

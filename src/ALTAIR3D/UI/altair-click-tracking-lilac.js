@@ -38,17 +38,18 @@ export class ClickTrackingLilac {
         this.customizeWhenClick = () => {};
 
         // 5. Animate
-        this.animateFunc = () => {
-            const time = performance.now() * 0.001;
+        this.animateFunc = (delta, elapsed) => {
+            const frameFactor = delta * 60;
+            const time = elapsed;
 
             this.ballGroup.children.forEach(ball => {
 
-                ball.userData.velocity.y -= 0.0005;
+                ball.userData.velocity.y -= 0.03 * delta;
 
-                ball.position.add(ball.userData.velocity);
+                ball.position.addScaledVector(ball.userData.velocity, frameFactor);
 
-                ball.rotation.x += ball.userData.spin.x;
-                ball.rotation.y += ball.userData.spin.y;
+                ball.rotation.x += ball.userData.spin.x * frameFactor;
+                ball.rotation.y += ball.userData.spin.y * frameFactor;
 
                 ball.material.emissiveIntensity = Math.abs(Math.sin(time * 4 + ball.userData.seed)) * 0.6 + 0.2;
 
@@ -56,12 +57,13 @@ export class ClickTrackingLilac {
                     ball.position.y = this.groundY;
                     ball.userData.velocity.y *= -this.bounceDamping;
 
-                    ball.userData.velocity.x *= 0.96;
-                    ball.userData.velocity.z *= 0.96;
+                    const bounceDrag = Math.pow(0.96, frameFactor);
+                    ball.userData.velocity.x *= bounceDrag;
+                    ball.userData.velocity.z *= bounceDrag;
                 }
             });
 
-            this.ballGroup.rotation.y -= 0.015;
+            this.ballGroup.rotation.y -= 0.9 * delta;
         };
 
         // 6. Functions

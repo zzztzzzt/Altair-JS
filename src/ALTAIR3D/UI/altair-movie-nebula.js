@@ -97,9 +97,9 @@ export class MovieNebula {
         this.customizeWhenClick = () => {};
 
         // 5. Animation
-        const clock = new THREE.Clock();
-        this.animateFunc = () => {
-            const time = clock.getElapsedTime();
+        this.animateFunc = (delta, elapsed) => {
+            const frameFactor = delta * 60;
+            const time = elapsed;
             
             for (let i = 0; i < this.particleCount; i++) {
                 // Retrieve the matrix of the current instance from InstancedMesh
@@ -119,9 +119,9 @@ export class MovieNebula {
                 const noiseX = noise(x * 0.5, y * 0.5, time * 0.2);
                 const noiseZ = noise(z * 0.5, y * 0.5, time * 0.2);
 
-                y += this.velocities[i].y;
-                x += (noiseX * 0.02 + this.velocities[i].x) * (1 + spread) * 2;
-                z += (noiseZ * 0.02 + this.velocities[i].z) * (1 + spread);
+                y += this.velocities[i].y * frameFactor;
+                x += (noiseX * 0.02 + this.velocities[i].x) * (1 + spread) * 2 * frameFactor;
+                z += (noiseZ * 0.02 + this.velocities[i].z) * (1 + spread) * frameFactor;
 
                 // Color changes with altitude
                 // Logic: The closer to the end (y is close to limit or -limit), the darker the color。

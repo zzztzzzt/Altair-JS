@@ -82,15 +82,16 @@ export class CursorTrailStellar {
         this.customizeWhenClick = customizeWhenClick;
 
         // 5. Animate
-        this.animateFunc = () => {
+        this.animateFunc = (delta) => {
+            const frameFactor = delta * 60;
             if (cube.material.opacity <= 0.15) {
                 opacityDir = -1;
             }
             if (cube.material.opacity >= 0.3) {
                 opacityDir = 1;
             }
-            cube.material.opacity -= 0.001 * opacityDir;
-            colorLerpT += 0.005;
+            cube.material.opacity -= 0.001 * opacityDir * frameFactor;
+            colorLerpT += 0.005 * frameFactor;
             if (colorLerpT > 1) {
                 colorLerpT = 0;
                 currentColorIndex = nextColorIndex;
@@ -101,37 +102,40 @@ export class CursorTrailStellar {
             const targetColor = this.cubeColors[nextColorIndex];
             cube.material.color.lerpColors(currentColor, targetColor, colorLerpT);
 
-            this.elapsedTime += 0.019;
+            this.elapsedTime += 1.14 * delta;
 
             const zOscillation = (Math.sin(this.elapsedTime) + 1) / 2 * 3;
 
             cube.position.z = zOscillation;
             ballGroup.position.z = zOscillation;
 
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
-            ballGroup.rotation.x -= 0.01;
-            ballGroup.rotation.y -= 0.01;
+            cube.rotation.x += 0.6 * delta;
+            cube.rotation.y += 0.6 * delta;
+            ballGroup.rotation.x -= 0.6 * delta;
+            ballGroup.rotation.y -= 0.6 * delta;
 
             balls.forEach(ballData => {
                 const { pivot, axis, speed, mesh, targetColor, currentColor } = ballData;
 
                 if (axis === 'x') {
-                    pivot.rotation.x += speed;
+                    pivot.rotation.x += speed * frameFactor;
                 } else if (axis === 'y') {
-                    pivot.rotation.y += speed;
+                    pivot.rotation.y += speed * frameFactor;
                 } else {
-                    pivot.rotation.z += speed;
+                    pivot.rotation.z += speed * frameFactor;
                 }
 
-                mesh.rotation.y += 0.02;
+                mesh.rotation.y += 1.2 * delta;
 
-                currentColor.lerp(targetColor, 0.02);
+                const colorLerpAlpha = 1 - Math.pow(1 - 0.02, frameFactor);
+                currentColor.lerp(targetColor, colorLerpAlpha);
                 mesh.material.color.copy(currentColor);
             });
 
-            cube.position.lerp(this.targetCubePos, 0.15);
-            ballGroup.position.lerp(this.targetBallGroupPos, 0.075);
+            const cubeLerpAlpha = 1 - Math.pow(1 - 0.15, frameFactor);
+            const ballLerpAlpha = 1 - Math.pow(1 - 0.075, frameFactor);
+            cube.position.lerp(this.targetCubePos, cubeLerpAlpha);
+            ballGroup.position.lerp(this.targetBallGroupPos, ballLerpAlpha);
         };
 
         // 6. Function

@@ -107,24 +107,27 @@ export class CursorTrailAurora {
         this.customizeWhenClick = () => {};
 
         // 5. Animation
-        this.animateFunc = () => {
+        this.animateFunc = (delta) => {
             if (!this._initialized) return;
-            this.elapsedTime += 0.02;
-            this.clickBurst *= 0.91; 
-            this.updateCore();
-            this.updateTrail();
+            const frameFactor = delta * 60;
+            this.elapsedTime += 1.2 * delta;
+            this.clickBurst *= Math.pow(0.91, frameFactor); 
+            this.updateCore(frameFactor);
+            this.updateTrail(frameFactor);
         };
 
         // 6. Functions
     }
 
-    updateCore() {
+    updateCore(frameFactor) {
         const prev = this.core.position.clone();
         // The 0.18 value here determines the sensitivity of the core-following mouse
-        this.core.position.lerp(this.target, 0.18); 
+        const coreLerpAlpha = 1 - Math.pow(1 - 0.18, frameFactor);
+        this.core.position.lerp(this.target, coreLerpAlpha); 
 
         const vel = new THREE.Vector3().subVectors(this.core.position, prev);
-        this.smoothedVelocity.lerp(vel, 0.2);
+        const velocityLerpAlpha = 1 - Math.pow(1 - 0.2, frameFactor);
+        this.smoothedVelocity.lerp(vel, velocityLerpAlpha);
 
         const speed = this.smoothedVelocity.length();
         const pulse = 1 + Math.sin(this.elapsedTime * 6) * 0.1 + this.clickBurst * 0.5;
@@ -133,9 +136,10 @@ export class CursorTrailAurora {
         this.core.material.opacity = 0.7 + speed * 8 + this.clickBurst;
     }
 
-    updateTrail() {
+    updateTrail(frameFactor) {
         // Let the first point smoothly follow the core, instead of directly cloning
-        this.trailHistory[0].lerp(this.core.position, 0.6);
+        const headLerpAlpha = 1 - Math.pow(1 - 0.6, frameFactor);
+        this.trailHistory[0].lerp(this.core.position, headLerpAlpha);
 
         // This allows subsequent points to exhibit a "chasing" effect, rather than a simple array displacement
         // This way in the turn, the point will be pulled along the curve, forming a circular arc feeling
@@ -143,7 +147,8 @@ export class CursorTrailAurora {
             const point = this.trailHistory[i];
             const prevPoint = this.trailHistory[i - 1];
             // Values ​​between 0.35 and 0.5 can result in a more graceful arc
-            point.lerp(prevPoint, 0.45); 
+            const trailLerpAlpha = 1 - Math.pow(1 - 0.45, frameFactor);
+            point.lerp(prevPoint, trailLerpAlpha); 
         }
 
         const speed = this.smoothedVelocity.length();

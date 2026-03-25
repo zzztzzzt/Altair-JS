@@ -14,7 +14,7 @@ export class ButtonGolden {
         let scaleNum = 1.0;
         let cubeStatus = "origin";
         const rotationAxis = new THREE.Vector3(1, 1, 0).normalize();
-        const quaternion = new THREE.Quaternion().setFromAxisAngle(rotationAxis, Math.PI / 180);
+        const ringRotationSpeed = Math.PI / 3;
 
         // 2. Meshes
         const sphereGeometry = new THREE.SphereGeometry(1.6, 32, 32);
@@ -109,21 +109,22 @@ export class ButtonGolden {
         this.customizeWhenClick = () => {};
 
         // 5. Animation
-        this.animateFunc = () => {
-            ring.quaternion.multiplyQuaternions(quaternion, ring.quaternion);
-            ringTwo.rotation.y += 0.01;
-            ringThree.rotation.x -= 0.01;
+        this.animateFunc = (delta) => {
+            const frameFactor = delta * 60;
+            ring.rotateOnAxis(rotationAxis, ringRotationSpeed * delta);
+            ringTwo.rotation.y += 0.6 * delta;
+            ringThree.rotation.x -= 0.6 * delta;
 
             if (cubeStatus == "max") {
-                cubeSize += 0.05;
+                cubeSize += 3 * delta;
                 if (cubeSize >= 5) cubeSize = 5;
             }
             if (cubeStatus == "bigger") {
-                cubeSize += 0.05;
+                cubeSize += 3 * delta;
                 if (cubeSize >= 1.8) cubeSize = 1.8;
             }
             if (cubeStatus == "smaller") {
-                cubeSize -= 0.025;
+                cubeSize -= 1.5 * delta;
                 if (cubeSize <= 1.2) {
                     cubeSize = 1.2;
                     cubeStatus = "origin";
@@ -132,7 +133,7 @@ export class ButtonGolden {
 
             particles.children.forEach(function(particle) {
                 // update particle position
-                particle.position.add(particle.velocity);
+                particle.position.addScaledVector(particle.velocity, frameFactor);
 
                 // boundary detection, if the particle exceeds the cube space, reset the position
                 if (particle.position.x < -cubeSize / 2 || particle.position.x > cubeSize / 2 ||

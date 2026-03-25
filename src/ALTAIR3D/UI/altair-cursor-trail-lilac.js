@@ -86,22 +86,30 @@ export class CursorTrailLilac {
 
         // 5. Animate
         let t = 0;
-        this.animateFunc = () => {
-            t += 0.02;
+        this.animateFunc = (delta) => {
+            const frameFactor = delta * 60;
+            t += 1.2 * delta;
 
-            this.ringOne.rotation.y += 0.01 + fakeNoise(t) * 0.01;
-            this.ringTwo.rotation.x += 0.015 + Math.sin(t * 1.5) * 0.01;
-            this.ringThree.rotation.z += 0.02 + fakeNoise(t * 1.3) * 0.015;
-            this.ringFour.rotation.y += 0.005 + fakeNoise(t) * 0.01;
-            this.ringFive.rotation.x += 0.01 + Math.sin(t * 1.5) * 0.01;
-            this.ringSix.rotation.z += 0.01 + fakeNoise(t * 1.3) * 0.015;
+            this.ringOne.rotation.y += (0.01 + fakeNoise(t) * 0.01) * frameFactor;
+            this.ringTwo.rotation.x += (0.015 + Math.sin(t * 1.5) * 0.01) * frameFactor;
+            this.ringThree.rotation.z += (0.02 + fakeNoise(t * 1.3) * 0.015) * frameFactor;
+            this.ringFour.rotation.y += (0.005 + fakeNoise(t) * 0.01) * frameFactor;
+            this.ringFive.rotation.x += (0.01 + Math.sin(t * 1.5) * 0.01) * frameFactor;
+            this.ringSix.rotation.z += (0.01 + fakeNoise(t * 1.3) * 0.015) * frameFactor;
 
-            this.ringOne.position.lerp(this.targetRingOnePos, 0.06);
-            this.ringTwo.position.lerp(this.targetRingTwoPos, 0.08);
-            this.ringThree.position.lerp(this.targetRingThreePos, 0.10);
-            this.ringFour.position.lerp(this.targetRingThreePos, 0.12);
-            this.ringFive.position.lerp(this.targetRingFivePos, 0.14);
-            this.ringSix.position.lerp(this.targetRingSixPos, 0.16);
+            const lerpOne = 1 - Math.pow(1 - 0.06, frameFactor);
+            const lerpTwo = 1 - Math.pow(1 - 0.08, frameFactor);
+            const lerpThree = 1 - Math.pow(1 - 0.10, frameFactor);
+            const lerpFour = 1 - Math.pow(1 - 0.12, frameFactor);
+            const lerpFive = 1 - Math.pow(1 - 0.14, frameFactor);
+            const lerpSix = 1 - Math.pow(1 - 0.16, frameFactor);
+
+            this.ringOne.position.lerp(this.targetRingOnePos, lerpOne);
+            this.ringTwo.position.lerp(this.targetRingTwoPos, lerpTwo);
+            this.ringThree.position.lerp(this.targetRingThreePos, lerpThree);
+            this.ringFour.position.lerp(this.targetRingThreePos, lerpFour);
+            this.ringFive.position.lerp(this.targetRingFivePos, lerpFive);
+            this.ringSix.position.lerp(this.targetRingSixPos, lerpSix);
         };
 
         // 6. Function

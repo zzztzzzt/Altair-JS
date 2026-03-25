@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
+import { Timer } from 'three/examples/jsm/misc/Timer.js';
 
 export class AltairScene {
     constructor(divId, cssDivId) {
@@ -34,9 +35,9 @@ export class AltairScene {
         const scene = new THREE.Scene();
         this.scene = scene;
 
-        // 3. Clock
-        const clock = new THREE.Clock();
-        this.clock = clock;
+        // 3. Timer
+        const timer = new Timer();
+        this.timer = timer;
 
         // 4. Camera
         let camera = new THREE.PerspectiveCamera(20, div.getBoundingClientRect().width / div.getBoundingClientRect().height, 0.1, 1000);
@@ -136,13 +137,17 @@ export class AltairScene {
         this.controls = controls;
 
         // 10. Animation
-        function animate() {
+        function animate(timestamp) {
+            timer.update(timestamp);
+            const delta = timer.getDelta();
+            const elapsed = timer.getElapsed();
+
             animateFuncList.forEach(func => {
-                func();
+                func(delta, elapsed, timestamp);
             });
 
-            light.position.x = Math.sin(Date.now() * 0.00025) * 10;
-            light.position.z = Math.abs(Math.cos(Date.now() * 0.00025)) * 10;
+            light.position.x = Math.sin(elapsed * 0.25) * 10;
+            light.position.z = Math.abs(Math.cos(elapsed * 0.25)) * 10;
 
             controls.update();
 
@@ -151,7 +156,7 @@ export class AltairScene {
 
             requestAnimationFrame(animate);
         }
-        animate();
+        requestAnimationFrame(animate);
 
         // 11. Functions
         function findRoot(object, root) {
