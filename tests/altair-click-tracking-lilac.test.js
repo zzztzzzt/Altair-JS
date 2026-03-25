@@ -81,7 +81,7 @@ describe('ClickTrackingLilac Core Functionality Testing', () => {
 
     vi.spyOn(performance, 'now').mockReturnValue(1000);
 
-    tracker.animateFunc();
+    tracker.animateFunc(1/60);
 
     expect(ball.userData.velocity.y).toBeLessThan(velocityBefore.y);
     expect(ball.position.y).not.toBe(positionBefore.y);

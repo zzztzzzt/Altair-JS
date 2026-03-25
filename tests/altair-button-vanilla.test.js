@@ -90,7 +90,7 @@ describe('ButtonVanilla Core Functionality Testing', () => {
     const positionAttr = button.particleSystem.geometry.attributes.position;
     const prevVersion = positionAttr.version;
 
-    animate();
+    animate(1/60);
 
     expect(button.arrow.rotation.x).toBeGreaterThan(prevRotX);
     expect(button.arrow.rotation.y).toBeGreaterThan(prevRotY);
