@@ -96,6 +96,7 @@ setup basic scene in javascript
 
 ```javascript
 import { setup } from "./src/setup";
+
 const basicScene = setup.jsVer("three-area", "three-area-css");
 ```
 
@@ -124,6 +125,7 @@ nebula.rotationSet(Math.PI / 6, 0, -Math.PI / 4);
 ### 1. new a 3D UI Component
 
 ```javascript
+import * as THREE from "three";
 import {
     MovieNebula,
 } from "./src/components";
