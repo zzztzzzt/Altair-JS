@@ -13,7 +13,13 @@ export class ButtonAurora {
             "shard-color-b": 0xff007f,
             "pulse": 0xffffff
         };
-        const colorTypeTwo = [];
+        const colorTypeTwo = {
+            "core": 0x000000,
+            "core-emissive": 0x000000,
+            "shard-color-a": 0x424242,
+            "shard-color-b": 0x969696,
+            "pulse": 0xffffff
+        };
         let colorCustom = {};
         this.colorTypeList = [colorTypeOne, colorTypeTwo, colorCustom];
 
@@ -83,16 +89,24 @@ export class ButtonAurora {
         this.pulse.rotation.x = Math.PI / 2;
         this.pulse.visible = false;
 
+        // 3. Lights
+
         // 4. Event Listeners
         this.whenMouseOver = () => { isHovered = true; };
+
         this.notMouseOver = () => { isHovered = false; };
+
         this.whenClick = () => {
             burstStrength = 2.0; pulseProgress = 1.0;
             this.pulse.visible = true; this.pulse.scale.set(1, 1, 1); this.pulse.material.opacity = 0.9;
         };
+
         this.whenMouseMove = (x, y) => {};
+
         this.customizeWhenMouseOver = () => {};
+
         this.customizeNotMouseOver = () => {};
+
         this.customizeWhenClick = () => {};
 
         // 5. Animation
@@ -186,15 +200,26 @@ export class ButtonAurora {
 
     getAnimateFunc() { return this.animateFunc; }
 
-    getListenerFunc(type) {
-        if (type === "click") return this.whenClick;
-        if (type === "mousemove") return this.whenMouseMove;
-        if (type === "mouseover") return this.whenMouseOver;
-        if (type === "notmouseover") return this.notMouseOver;
+    getListenerFunc(listenerType) {
+        if (listenerType === "click") {
+            return this.whenClick;
+        }
+        if (listenerType === "mousemove") {
+            return this.whenMouseMove;
+        }
+        if (listenerType === "mouseover") {
+            return this.whenMouseOver;
+        }
+        if (listenerType === "notmouseover") {
+            return this.notMouseOver;
+        }
     }
 
     colorSet(color) {}
+
     scaleSet(x, y, z) { this.changeScale(x, y, z); }
+
     positionSet(x, y, z) { this.changePosition(x, y, z); }
+
     rotationSet(x, y, z) {}
 }
