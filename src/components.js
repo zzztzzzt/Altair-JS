@@ -8,6 +8,7 @@ export { ClickTrackingLilac } from "@altair3d/UI/altair-click-tracking-lilac.js"
 
 export { CursorTrailStellar } from "@altair3d/UI/altair-cursor-trail-stellar.js";
 export { CursorTrailLilac } from "@altair3d/UI/altair-cursor-trail-lilac.js";
+export { CursorTrailAurora } from "@altair3d/UI/altair-cursor-trail-aurora.js";
 
 export { MovieWater } from "@altair3d/UI/altair-movie-water.js";
 export { MovieNebula } from "@altair3d/UI/altair-movie-nebula.js";
