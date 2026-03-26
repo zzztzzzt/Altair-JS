@@ -90,8 +90,8 @@ export class CursorTrailAurora {
         };
 
         this.whenMouseMove = (x, y) => {
-            const mx = x * 5;
-            const my = y * 5;
+            const mx = x * 8;
+            const my = y * 6;
             if (!this._initialized) {
                 this._initialized = true;
                 this.core.position.set(mx, my, 0);

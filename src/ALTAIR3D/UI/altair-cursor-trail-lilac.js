@@ -64,8 +64,8 @@ export class CursorTrailLilac {
         };
 
         this.whenMouseMove = (x, y) => {
-            mainMeshX = x * 5;
-            mainMeshY = y * 5;
+            mainMeshX = x * 8;
+            mainMeshY = y * 6;
 
             this.targetRingOnePos.set(mainMeshX, mainMeshY, 0);
             this.targetRingTwoPos.set(mainMeshX, mainMeshY, 0);

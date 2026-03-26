@@ -65,8 +65,8 @@ export class CursorTrailStellar {
         };
 
         this.whenMouseMove = (x, y) => {
-            mainMeshX = x * 5;
-            mainMeshY = y * 5;
+            mainMeshX = x * 8;
+            mainMeshY = y * 6;
 
             this.targetCubePos.set(mainMeshX, mainMeshY, 0);
             this.targetBallGroupPos.set(mainMeshX, mainMeshY, 0);
