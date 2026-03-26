@@ -198,6 +198,26 @@ starRing.positionSet(0, 0, -120);
 starRing.rotationSet(Math.PI / 6, 0, -Math.PI / 4);
 ```
 
+## Project Detail / Debug
+
+### Setup special 3D Components
+
+#### Water
+
+```javascript
+import { setup } from "./src/setup";
+import { MovieWater } from "./src/components";
+
+import examplePureSky from '@hdr/example_puresky_1k.hdr';
+
+const basicScene = setup.jsVer("three-area", "three-area-css");
+
+const envMap = await basicScene.loadEnvironment(examplePureSky, 0, Math.PI * 5 / 9, 0);
+
+const ocean = new MovieWater(basicScene, envMap);
+basicScene.create(ocean);
+```
+
 ## Version History
 
 #### V 2.0 (2026.03) - High-fidelity ripple and wave effects + Real-time Reflections. Support for HDRIs to achieve cinematic lighting.
