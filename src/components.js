@@ -2,6 +2,7 @@ export { ButtonVanilla } from "@altair3d/UI/altair-button-vanilla.js";
 export { ButtonGolden } from "@altair3d/UI/altair-button-golden.js";
 export { ButtonFlowerRing } from "@altair3d/UI/altair-button-flower-ring.js";
 export { ButtonAurora } from "@altair3d/UI/altair-button-aurora.js";
+export { ButtonRadiant } from "@altair3d/UI/altair-button-radiant.js";
 
 export { ClickTrackingStellar } from "@altair3d/UI/altair-click-tracking-stellar.js";
 export { ClickTrackingLilac } from "@altair3d/UI/altair-click-tracking-lilac.js";
