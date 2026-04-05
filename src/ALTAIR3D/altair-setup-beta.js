@@ -133,8 +133,8 @@ export class AltairScene {
         });
 
         // 9. Orbit Controls
-        const controls = new OrbitControls(camera, cssRenderer.domElement);
-        this.controls = controls;
+        //const controls = new OrbitControls(camera, cssRenderer.domElement);
+        //this.controls = controls;
 
         // 10. Animation
         function animate(timestamp) {
@@ -149,7 +149,7 @@ export class AltairScene {
             light.position.x = Math.sin(elapsed * 0.25) * 10;
             light.position.z = Math.abs(Math.cos(elapsed * 0.25)) * 10;
 
-            controls.update();
+            //controls.update();
 
             renderer.render(scene, camera);
             cssRenderer.render(scene, camera);
