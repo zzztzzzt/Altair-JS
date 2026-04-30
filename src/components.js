@@ -6,6 +6,7 @@ export { ButtonRadiant } from "@altair3d/UI/altair-button-radiant.js";
 
 export { ClickTrackingStellar } from "@altair3d/UI/altair-click-tracking-stellar.js";
 export { ClickTrackingLilac } from "@altair3d/UI/altair-click-tracking-lilac.js";
+export { ClickTrackingNeonOrange } from "@altair3d/UI/altair-click-tracking-neon-orange.js";
 
 export { CursorTrailStellar } from "@altair3d/UI/altair-cursor-trail-stellar.js";
 export { CursorTrailLilac } from "@altair3d/UI/altair-cursor-trail-lilac.js";
