@@ -26,9 +26,7 @@ Altair-JS uses Three.js for 3D graphics rendering. Three.js licensed under the M
 
 Altair-JS uses Vite for development, and Vitest for unit testing. Vite & Vitest licensed under the MIT License.
 
-![2.0showcase](https://github.com/zzztzzzt/Altair-JS/blob/main/showcase/real-showcase-five.webp)
-
-<br><br>
+![2.1showcase](https://github.com/zzztzzzt/Altair-JS/blob/main/showcase/real-showcase-six.png)
 
 ## Installation
 

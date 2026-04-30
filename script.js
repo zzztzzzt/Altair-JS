@@ -6,6 +6,5 @@ import {
 
 const basicScene = setup.jsVer("three-area", "three-area-css");
 
-
 const CT = new ClickTrackingNeonOrange();
 basicScene.create(CT);
