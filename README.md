@@ -28,9 +28,6 @@ Altair-JS uses Vite for development, and Vitest for unit testing. Vite & Vitest 
 
 ![2.0showcase](https://github.com/zzztzzzt/Altair-JS/blob/main/showcase/real-showcase-five.webp)
 
-**( Old Version )**
-
-![2.0showcase2](https://github.com/zzztzzzt/Altair-JS/blob/main/showcase/real-showcase-four.webp)
 <br><br>
 
 ## Installation
@@ -226,23 +223,6 @@ const envMap = await basicScene.loadEnvironment(examplePureSky, 0, Math.PI * 5 /
 const ocean = new MovieWater(basicScene, envMap);
 basicScene.create(ocean);
 ```
-
-## Version History
-
-#### V 2.0 (2026.03) - High-fidelity ripple and wave effects + Real-time Reflections. Support for HDRIs to achieve cinematic lighting.
-![2.0showcase](https://github.com/zzztzzzt/Altair-JS/blob/main/showcase/real-showcase-five.webp)
-
-#### V 1.3 (2025.07) - A consolidation of previous features. An expanded library of pre-built 3D UI components & Animations for faster development.
-![1.3showcase](https://github.com/zzztzzzt/Altair-JS/blob/main/showcase/real-showcase-four.webp?v=2)
-
-#### V 1.2 (2024.11) - GLB/glTF Support. A modular template system that allows developers to deploy GLB-based UI components and environments instantly.
-![1.2showcase](https://github.com/zzztzzzt/Altair-JS/blob/main/showcase/real-showcase-three.webp?v=2)
-
-#### V 1.1 (2024.10) - Layered Web Design Support, Multi-Scene Architecture, can mixed with 2D elements via z-index. Native Responsive Handling.
-![1.1showcase](https://github.com/zzztzzzt/Altair-JS/blob/main/showcase/real-showcase-two.webp)
-
-#### V 1.0 (2024.09) - The start of ALTAIR.js Project. High-level Three.js Wrapper, support hybrid development with Three.js. Intuitive method for 3D Scene & UI component creation.
-![1.0showcase](https://github.com/zzztzzzt/Altair-JS/blob/main/showcase/real-showcase.webp)
 
 ## Project Dependencies Details
 
