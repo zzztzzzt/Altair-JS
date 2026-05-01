@@ -5,30 +5,30 @@ import { AltairScene } from '@altair3d/altair-setup-beta';
 // Simulate a WebGL Context (to prevent Three.js from throwing errors)
 vi.mock('three', async () => {
   const actual = await vi.importActual('three');
-    
+
   class MockWebGLRenderer {
     constructor() {
       this.domElement = document.createElement('canvas');
     }
-    setSize() {}
-    render() {}
-    dispose() {}
+    setSize() { }
+    render() { }
+    dispose() { }
   }
-  
+
   return {
     ...actual,
     WebGLRenderer: MockWebGLRenderer,
   };
 });
-  
+
 vi.mock('three/examples/jsm/renderers/CSS3DRenderer.js', () => {
   return {
     CSS3DRenderer: class {
       constructor() {
         this.domElement = document.createElement('div');
       }
-      setSize() {}
-      render() {}
+      setSize() { }
+      render() { }
     }
   };
 });
@@ -48,9 +48,9 @@ describe('AltairScene Core Functionality Testing', () => {
       <div id="webgl-container" style="width: 800px; height: 600px;"></div>
       <div id="css-container" style="width: 800px; height: 600px;"></div>
     `;
-    
+
     // Simulate getBoundingClientRect, because Three.js uses width and height during initialization
-    window.HTMLElement.prototype.getBoundingClientRect = function() {
+    window.HTMLElement.prototype.getBoundingClientRect = function () {
       return { width: 800, height: 600, top: 0, left: 0, right: 800, bottom: 600 };
     };
   });
@@ -60,7 +60,7 @@ describe('AltairScene Core Functionality Testing', () => {
 
     expect(basicScene.scene).toBeInstanceOf(THREE.Scene);
     expect(basicScene.camera).toBeInstanceOf(THREE.PerspectiveCamera);
-    
+
     expect(basicScene.ambientLight).toBeDefined();
     expect(basicScene.scene.children).toContain(basicScene.ambientLight);
     expect(basicScene.scene.children).toContain(basicScene.light);
@@ -76,21 +76,21 @@ describe('AltairScene Core Functionality Testing', () => {
     const cssDiv = document.getElementById('css-container');
 
     expect(webglDiv.querySelector('canvas')).not.toBeNull();
-    
+
     expect(cssDiv.children.length).toBeGreaterThan(0);
   });
 
   it('create-method should be able to create and register objects', async () => {
     const basicScene = new AltairScene('webgl-container', 'css-container');
-    
+
     const mockMesh = new THREE.Mesh();
     mockMesh.uuid = 'test-mesh-uuid';
 
     const mockAltairObject = {
-        objectType: 'button',
-        getMeshes: async () => ({ mainMesh: mockMesh }),
-        getAnimateFunc: () => () => {},
-        getListenerFunc: (type) => () => `handler-${type}`
+      objectType: 'button',
+      getMeshes: async () => ({ mainMesh: mockMesh }),
+      getAnimateFunc: () => () => { },
+      getListenerFunc: (type) => () => `handler-${type}`
     };
 
     await basicScene.create(mockAltairObject);
@@ -120,8 +120,8 @@ describe('AltairScene Core Functionality Testing', () => {
     const mockAltairObject = {
       objectType: 'click-tracking',
       getMeshes: async () => ({ mainMesh: mockMesh }),
-      getAnimateFunc: () => () => {},
-      getListenerFunc: (type) => (type === 'click' ? clickHandler : () => {}),
+      getAnimateFunc: () => () => { },
+      getListenerFunc: (type) => (type === 'click' ? clickHandler : () => { }),
     };
 
     await basicScene.create(mockAltairObject);
@@ -131,14 +131,14 @@ describe('AltairScene Core Functionality Testing', () => {
   });
 
   it('create-method should reject object-type and invalid objectType', async () => {
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
     const basicScene = new AltairScene('webgl-container', 'css-container');
 
     const objectTypeObj = {
       objectType: 'object-type',
       getMeshes: async () => ({}),
-      getAnimateFunc: () => () => {},
-      getListenerFunc: () => () => {},
+      getAnimateFunc: () => () => { },
+      getListenerFunc: () => () => { },
       constructor: { name: 'FakeObject' },
     };
     await basicScene.create(objectTypeObj);
@@ -148,8 +148,8 @@ describe('AltairScene Core Functionality Testing', () => {
     const invalidObj = {
       objectType: 'invalid',
       getMeshes: async () => ({}),
-      getAnimateFunc: () => () => {},
-      getListenerFunc: () => () => {},
+      getAnimateFunc: () => () => { },
+      getListenerFunc: () => () => { },
       constructor: { name: 'FakeObject' },
     };
     await basicScene.create(invalidObj);
@@ -164,5 +164,30 @@ describe('AltairScene Core Functionality Testing', () => {
     expect(result).toBeDefined();
     expect(basicScene.scene.environment).toBeDefined();
     expect(basicScene.scene.background).toBeDefined();
+  });
+
+  it('should handle mousemove and skip listeners for cursor-trail', async () => {
+    const intersectMock = vi.spyOn(THREE.Raycaster.prototype, 'intersectObjects').mockReturnValue([]);
+    const basicScene = new AltairScene('webgl-container', 'css-container');
+    const overHandler = vi.fn();
+    const mockTrail = {
+      objectType: 'cursor-trail',
+      mainMesh: new THREE.Mesh(),
+      getMeshes: async () => ({ mainMesh: mockTrail.mainMesh }),
+      getAnimateFunc: () => () => { },
+      // Return handler only for mouseover, not mousemove
+      getListenerFunc: (type) => (type === 'mouseover' ? overHandler : () => { })
+    };
+
+    await basicScene.create(mockTrail);
+
+    // Test logic : intersection exists but should be skipped for cursor-trail
+    intersectMock.mockReturnValue([{ object: mockTrail.mainMesh }]);
+    window.dispatchEvent(new MouseEvent('mousemove'));
+
+    expect(overHandler).not.toHaveBeenCalled();
+    expect(document.body.style.cursor).toBe('auto');
+
+    intersectMock.mockRestore();
   });
 });
