@@ -45,6 +45,10 @@ export class CursorTrailLilac {
             // Particle ring
             const points = createShaderRing(config.radius, config.tube, config.colors, config.count, config.size);
             points.name = 'particles';
+            // override the raycast method to prevent Raycaster from detecting the Mesh
+            points.raycast = function (raycaster, intersects) {
+                // return directly without doing any operation, preventing Raycaster from detecting
+            };
             group.add(points);
             
             const torusGeo = new THREE.TorusGeometry(config.radius, config.tube * 1.5, 16, 100);
@@ -54,6 +58,10 @@ export class CursorTrailLilac {
                 opacity: 0.3
             });
             const torusMesh = new THREE.Mesh(torusGeo, torusMat);
+            // override the raycast method to prevent Raycaster from detecting the Mesh
+            torusMesh.raycast = function (raycaster, intersects) {
+                // return directly without doing any operation, preventing Raycaster from detecting
+            };
             group.add(torusMesh);
             
             return group;

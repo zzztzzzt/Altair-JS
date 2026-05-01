@@ -106,9 +106,12 @@ export class AltairScene {
             // detect intersection of ray and object
             let intersects = raycaster.intersectObjects(interactiveMeshes, true);
 
+            const onlyHasCursorTrailAndClickTracking = altairObjectList.some(object => 
+                object.objectType === 'cursor-trail' || object.objectType === 'click-tracking'
+            );
             if (intersects.length > 0) {
                 // prevent the program from not executing notHover() when intersects.length > 0
-                if (currentObject != null)  listenerFuncMapNotMouseOver.get(currentObject.mainMesh.uuid)();
+                if (currentObject != null && !onlyHasCursorTrailAndClickTracking)  listenerFuncMapNotMouseOver.get(currentObject.mainMesh.uuid)();
 
                 for (const key in altairObjectList) {
                     if (findRoot(intersects[0].object, altairObjectList[key].mainMesh)) {
@@ -116,18 +119,18 @@ export class AltairScene {
                         if (altairObjectList[key].objectType != 'click-tracking' && altairObjectList[key].objectType != 'input' && altairObjectList[key].objectType != 'cursor-trail') document.body.style.cursor = 'pointer';
                         else document.body.style.cursor = 'auto';
 
-                        listenerFuncMapMouseOver.get(currentObject.mainMesh.uuid)();
+                        if (!onlyHasCursorTrailAndClickTracking) listenerFuncMapMouseOver.get(currentObject.mainMesh.uuid)();
 
                         break;
                     }
                     else {
-                        if (currentObject != null) listenerFuncMapNotMouseOver.get(currentObject.mainMesh.uuid)();
+                        if (currentObject != null && !onlyHasCursorTrailAndClickTracking) listenerFuncMapNotMouseOver.get(currentObject.mainMesh.uuid)();
                         document.body.style.cursor = 'auto';
                     }
                 }
             }
             else {
-                if (currentObject != null)  listenerFuncMapNotMouseOver.get(currentObject.mainMesh.uuid)();
+                if (currentObject != null && !onlyHasCursorTrailAndClickTracking)  listenerFuncMapNotMouseOver.get(currentObject.mainMesh.uuid)();
                 document.body.style.cursor = 'auto';
             }
         });
