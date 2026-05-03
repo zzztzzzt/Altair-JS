@@ -28,8 +28,6 @@ Altair-JS uses Vite for development, and Vitest for unit testing. Vite & Vitest 
 
 ![2.1showcase](https://github.com/zzztzzzt/Altair-JS/blob/main/showcase/real-showcase-six.png)
 
-![2.1showcase2](https://github.com/zzztzzzt/Altair-JS/blob/main/showcase/real-showcase-seven.webp)
-
 ## Installation
 
 ### Quick Start - No Need Coding !
