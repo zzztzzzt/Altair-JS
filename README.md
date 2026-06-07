@@ -1,5 +1,7 @@
 # Altair-JS
 
+![logo-design](https://github.com/zzztzzzt/Altair-JS/blob/main/logo/design.webp)
+
 ![GitHub last commit](https://img.shields.io/github/last-commit/zzztzzzt/Altair-JS.svg)
 ![CodeQL](https://github.com/zzztzzzt/Altair-JS/actions/workflows/codeql.yml/badge.svg)
 ![GitHub repo size](https://img.shields.io/github/repo-size/zzztzzzt/Altair-JS.svg)
