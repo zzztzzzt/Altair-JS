@@ -11,6 +11,7 @@ export { ClickTrackingNeonOrange } from "@altair3d/UI/altair-click-tracking-neon
 export { CursorTrailStellar } from "@altair3d/UI/altair-cursor-trail-stellar.js";
 export { CursorTrailLilac } from "@altair3d/UI/altair-cursor-trail-lilac.js";
 export { CursorTrailAurora } from "@altair3d/UI/altair-cursor-trail-aurora.js";
+export { CursorTrailMatcha } from "@altair3d/UI/altair-cursor-trail-matcha.js";
 
 export { MovieWater } from "@altair3d/UI/altair-movie-water.js";
 export { MovieNebula } from "@altair3d/UI/altair-movie-nebula.js";

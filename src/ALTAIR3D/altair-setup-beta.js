@@ -45,7 +45,7 @@ export class AltairScene {
         this.camera = camera;
 
         // 5. Renderer
-        let renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        let renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(div.getBoundingClientRect().width, div.getBoundingClientRect().height);
         div.appendChild(renderer.domElement);
         this.renderer = renderer;
