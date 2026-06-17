@@ -238,7 +238,7 @@ import examplePureSky from '@hdr/example_puresky_1k.hdr';
 const envMap = await basicScene.loadEnvironment(examplePureSky, 0, Math.PI * 5 / 9, 0);
 ```
 
-### 2. Equiretangular + Imgs
+#### 2. Equiretangular + Imgs
 
 ```javascript
 const basicScene = setup.jsVer("three-area", "three-area-css");
