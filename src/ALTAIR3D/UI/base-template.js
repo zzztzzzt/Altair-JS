@@ -2,9 +2,11 @@ import * as THREE from 'three';
 //import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 export class BaseTemplate {
-    constructor(color = 0) {
+    constructor(color = 0, useEnvMap = false) {
         // 1. Variables
         this.objectType = 'object-type';
+
+        this.useEnvMap = useEnvMap;
 
         this.color = color;
         let colorTypeOne = {};

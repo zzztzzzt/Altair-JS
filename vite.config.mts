@@ -9,6 +9,7 @@ export default defineConfig({
       '@altair3d': fileURLToPath(new URL('./src/ALTAIR3D', import.meta.url)),
       '@utils': fileURLToPath(new URL('./src/ALTAIR3D/utils', import.meta.url)),
       '@hdr': fileURLToPath(new URL('./src/ALTAIR3D/UI/hdr', import.meta.url)),
+      '@equirectangular': fileURLToPath(new URL('./src/ALTAIR3D/UI/equirectangular', import.meta.url)),
       '@models': fileURLToPath(new URL('./src/ALTAIR3D/UI/models', import.meta.url)),
       '@textures': fileURLToPath(new URL('./src/ALTAIR3D/UI/textures', import.meta.url))
     }

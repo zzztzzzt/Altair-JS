@@ -33,7 +33,7 @@ export class CursorTrailMatcha {
 
         this.whenMouseMove = (x, y) => {
             const tx = x * 8; const ty = y * 6;
-            createLeaves(this.colorTypeList, tx, ty, 0);
+            createLeaves(this.colorTypeList, this.color, tx, ty, 0);
         };
 
         this.customizeWhenMouseOver = () => {};
@@ -73,7 +73,7 @@ export class CursorTrailMatcha {
         };
 
         // 6. Functions
-        function createLeaves(colorTypeList, x, y, z, radius = 1.1) {
+        function createLeaves(colorTypeList, color, x, y, z, radius = 1.1) {
             const newPosition = new THREE.Vector3(x, y, z);
             
             for (let i = 0; i < leavesGroup.children.length; i++) {
@@ -90,8 +90,8 @@ export class CursorTrailMatcha {
             
             const count = geometry.attributes.position.count;
             const colors = [];
-            const colorCenter = new THREE.Color(colorTypeList[0]["leaf-color-center"]);
-            const colorEdge = new THREE.Color(colorTypeList[0]["leaf-color-edge"]);
+            const colorCenter = new THREE.Color(colorTypeList[color]["leaf-color-center"]);
+            const colorEdge = new THREE.Color(colorTypeList[color]["leaf-color-edge"]);
             
             const posAttr = geometry.attributes.position;
             for (let i = 0; i < count; i++) {

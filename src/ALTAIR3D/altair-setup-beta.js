@@ -136,8 +136,8 @@ export class AltairScene {
         });
 
         // 9. Orbit Controls
-        //const controls = new OrbitControls(camera, cssRenderer.domElement);
-        //this.controls = controls;
+        const controls = new OrbitControls(camera, cssRenderer.domElement);
+        this.controls = controls;
 
         // 10. Animation
         function animate(timestamp) {
@@ -152,7 +152,7 @@ export class AltairScene {
             light.position.x = Math.sin(elapsed * 0.25) * 10;
             light.position.z = Math.abs(Math.cos(elapsed * 0.25)) * 10;
 
-            //controls.update();
+            controls.update();
 
             renderer.render(scene, camera);
             cssRenderer.render(scene, camera);
@@ -184,6 +184,27 @@ export class AltairScene {
                     this.scene.backgroundRotation.set(rotationX, rotationY, rotationZ);
 
                     resolve(hdr);
+                },
+                undefined,
+                (err) => reject(err)
+            );
+        });
+    }
+
+    loadEquirectangular(imagePath, rotationX, rotationY, rotationZ) {
+        return new Promise((resolve, reject) => {
+            new THREE.TextureLoader().load(
+                imagePath,
+                (texture) => {
+                    texture.mapping = THREE.EquirectangularReflectionMapping;
+                    texture.colorSpace = THREE.SRGBColorSpace;
+    
+                    this.scene.environment = texture;
+                    this.scene.background = texture;
+                    this.scene.environmentRotation.set(rotationX, rotationY, rotationZ);
+                    this.scene.backgroundRotation.set(rotationX, rotationY, rotationZ);
+    
+                    resolve(texture);
                 },
                 undefined,
                 (err) => reject(err)

@@ -224,6 +224,30 @@ const ocean = new MovieWater(basicScene, envMap);
 basicScene.create(ocean);
 ```
 
+### envMap
+
+two ways to setup the environment :
+
+#### 1. HDR file ( Recommanded )
+
+```javascript
+const basicScene = setup.jsVer("three-area", "three-area-css");
+
+import examplePureSky from '@hdr/example_puresky_1k.hdr';
+
+const envMap = await basicScene.loadEnvironment(examplePureSky, 0, Math.PI * 5 / 9, 0);
+```
+
+### 2. Equiretangular + Imgs
+
+```javascript
+const basicScene = setup.jsVer("three-area", "three-area-css");
+
+import exampleMountains from '@equirectangular/example_mountains.webp';
+
+const envMap = await basicScene.loadEquirectangular(exampleMountains, 0, Math.PI, 0);
+```
+
 ## Project Dependencies Details
 
 Three.js License : [https://github.com/mrdoob/three.js/blob/dev/LICENSE](https://github.com/mrdoob/three.js/blob/dev/LICENSE)
