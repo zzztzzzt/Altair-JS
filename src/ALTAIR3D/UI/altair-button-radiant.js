@@ -19,7 +19,7 @@ export class ButtonRadiant {
         let smoothChaos = 0;
 
         // 2. Meshes
-        const matelFlowerGeom = new THREE.TorusKnotGeometry(1.0, 0.3, 44, 20, 1, 20);
+        const matelFlowerGeom = new THREE.TorusKnotGeometry(1.0, 0.3, 44, 20, 1, 15);
         const matelFlowerMat = new THREE.MeshPhysicalMaterial({
             color: this.colorTypeList[this.color][0],
             metalness: 0.95,
