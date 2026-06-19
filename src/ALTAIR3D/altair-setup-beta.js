@@ -5,11 +5,14 @@ import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 import { Timer } from 'three/examples/jsm/misc/Timer.js';
 
 export class AltairScene {
-    constructor(divId, cssDivId) {
+    constructor(divId, cssDivId, FOV, cameraZ, useEnvMap) {
         const div = document.getElementById(divId);
         this.div = div;
         const cssDiv = document.getElementById(cssDivId);
         this.cssDiv = cssDiv;
+        
+        this.FOV = FOV;
+        this.cameraZ = cameraZ;
 
         // 1. Variables
         let altairObjectList = [];
@@ -40,13 +43,19 @@ export class AltairScene {
         this.timer = timer;
 
         // 4. Camera
-        let camera = new THREE.PerspectiveCamera(20, div.getBoundingClientRect().width / div.getBoundingClientRect().height, 0.1, 1000);
-        camera.position.z = 20;
+        let camera = new THREE.PerspectiveCamera(this.FOV, div.getBoundingClientRect().width / div.getBoundingClientRect().height, 0.1, 1000);
+        camera.position.z = this.cameraZ;
         this.camera = camera;
 
         // 5. Renderer
         let renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(div.getBoundingClientRect().width, div.getBoundingClientRect().height);
+        
+        // Tone mapping and exposure for HDR
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 0.8;
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+        
         div.appendChild(renderer.domElement);
         this.renderer = renderer;
 
@@ -60,11 +69,13 @@ export class AltairScene {
         // 7. Lights
         let ambientLight = new THREE.AmbientLight(0xffffff, 3);
         scene.add(ambientLight);
-        this.ambientLight = ambientLight;
+        if (!useEnvMap) this.ambientLight = ambientLight;
 
         let light = new THREE.PointLight(0xffffff, 200, 50);
-        light.position.set(0, 5, 0);
-        scene.add(light);
+        if (!useEnvMap) {
+            light.position.set(0, 5, 0);
+            scene.add(light);
+        }
         this.light = light;
 
         // 8. Event Listeners
@@ -149,8 +160,10 @@ export class AltairScene {
                 func(delta, elapsed, timestamp);
             });
 
-            light.position.x = Math.sin(elapsed * 0.25) * 10;
-            light.position.z = Math.abs(Math.cos(elapsed * 0.25)) * 10;
+            if (!useEnvMap) {
+                light.position.x = Math.sin(elapsed * 0.25) * 10;
+                light.position.z = Math.abs(Math.cos(elapsed * 0.25)) * 10;
+            }
 
             controls.update();
 

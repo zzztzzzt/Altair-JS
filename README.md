@@ -214,11 +214,15 @@ matelFlower2.positionSet(0, 0, -20);
 import { setup } from "./src/setup";
 import { MovieWater } from "./src/components";
 
+const useEnvMap = true;
+
+const FOV = 75;
+const cameraZ = 20;
+const basicScene = setup.jsVer("three-area", "three-area-css", FOV, cameraZ, useEnvMap);
+
 import examplePureSky from '@hdr/example_puresky_1k.hdr';
 
-const basicScene = setup.jsVer("three-area", "three-area-css");
-
-const envMap = await basicScene.loadEnvironment(examplePureSky, 0, Math.PI * 5 / 9, 0);
+const envMap = await basicScene.loadEnvironment(examplePureSky, 0, Math.PI * 5 / 9, 0, 0.8);
 
 const ocean = new MovieWater(basicScene, envMap);
 basicScene.create(ocean);
@@ -231,17 +235,25 @@ two ways to setup the environment :
 #### 1. HDR file ( Recommanded )
 
 ```javascript
-const basicScene = setup.jsVer("three-area", "three-area-css");
+const useEnvMap = true;
+
+const FOV = 75;
+const cameraZ = 20;
+const basicScene = setup.jsVer("three-area", "three-area-css", FOV, cameraZ, useEnvMap);
 
 import examplePureSky from '@hdr/example_puresky_1k.hdr';
 
-const envMap = await basicScene.loadEnvironment(examplePureSky, 0, Math.PI * 5 / 9, 0);
+const envMap = await basicScene.loadEnvironment(examplePureSky, 0, Math.PI * 5 / 9, 0, 0.8);
 ```
 
 #### 2. Equiretangular + Imgs
 
 ```javascript
-const basicScene = setup.jsVer("three-area", "three-area-css");
+const useEnvMap = true;
+
+const FOV = 80;
+const cameraZ = 20;
+const basicScene = setup.jsVer("three-area", "three-area-css", FOV, cameraZ, useEnvMap);
 
 import exampleMountains from '@equirectangular/example_mountains.webp';
 

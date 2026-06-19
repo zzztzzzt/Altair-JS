@@ -99,6 +99,8 @@ export class ButtonMatcha {
     
             this.mainMesh.add(ring);
         }
+
+        this.mainMesh.scale.set(0.45, 0.45, 0.45);
     
         this.applyMaterial(this.mainMesh);
     }
@@ -106,10 +108,46 @@ export class ButtonMatcha {
     applyMaterial(mesh) {
         if (!this.useEnvMap) {
             this.material = new THREE.MeshPhongMaterial({
-                color: 0xaeb8b2,
-                specular: 0x8ecfb4,
-                shininess: 80,
+                color: 0xffffff,
+                specular: 0x96ffa7,
+                shininess: 90,
             });
+    
+            this.material.onBeforeCompile = (shader) => {
+                shader.uniforms.uTime = { value: 0 };
+                this.material.userData.shader = shader;
+    
+                shader.vertexShader =
+                    `varying vec3 vWorldPos;\n` + shader.vertexShader;
+    
+                shader.vertexShader = shader.vertexShader.replace(
+                    '#include <project_vertex>',
+                    `
+                    #include <project_vertex>
+                    vWorldPos = (modelMatrix * vec4(position, 1.0)).xyz;
+                    `
+                );
+    
+                shader.fragmentShader =
+                    `uniform float uTime;\nvarying vec3 vWorldPos;\n` + shader.fragmentShader;
+    
+                shader.fragmentShader = shader.fragmentShader.replace(
+                    '#include <color_fragment>',
+                    `
+                    vec3 colorA = vec3(0.39, 1.00, 0.28);
+                    vec3 colorB = vec3(0.94, 0.94, 0.94);
+    
+                    float gradient =
+                        sin(
+                            vWorldPos.y * 2.5 +
+                            vWorldPos.x * 1.5 +
+                            uTime
+                        ) * 0.5 + 0.5;
+    
+                    diffuseColor.rgb *= mix(colorA, colorB, gradient);
+                    `
+                );
+            };
     
             mesh.traverse((child) => {
                 if (child.isMesh) {
@@ -160,8 +198,8 @@ export class ButtonMatcha {
                 shader.fragmentShader = shader.fragmentShader.replace(
                     '#include <color_fragment>',
                     `
-                    vec3 colorA = vec3(0.68, 0.70, 0.72);
-                    vec3 colorB = vec3(0.63, 0.85, 0.72);
+                    vec3 colorA = vec3(0.59, 1.00, 0.65);
+                    vec3 colorB = vec3(0.85, 0.85, 0.88);
     
                     float gradient =
                         sin(

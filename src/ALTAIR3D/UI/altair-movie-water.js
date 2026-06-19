@@ -42,7 +42,7 @@ export class MovieWater {
         
             uEnvMap: { value: hdrTexture },
             uDynamicEnvMap: { value: cubeRenderTarget.texture },
-            uReflectionMix: { value: 0.7 }, // controlling the blending ratio of static HDR vs dynamic reflections
+            uReflectionMix: { value: 0.3 }, // controlling the blending ratio of static HDR vs dynamic reflections
 
             uEnvRotation: { value: Math.PI * 5 / 9 }
         };
@@ -145,12 +145,12 @@ export class MovieWater {
             vec3 envColor = mix(staticEnvColor, dynamicEnvColor, uReflectionMix);
 
             // ===== Water Color
-            vec3 waterColor = vec3(0.0, 0.35, 0.6);
-            vec3 baseColor = waterColor * (0.4 + diffuse * 0.6);
+            vec3 waterColor = vec3(0.28, 0.35, 0.38);
+            vec3 baseColor = waterColor * (0.6 + diffuse * 0.4);
 
             // ===== Mix Reflection
-            vec3 color = mix(baseColor, envColor, fresnel * 0.8)
-                    + vec3(1.0) * spec * 0.3;
+            vec3 color = mix(baseColor, envColor, clamp(fresnel * 1.0, 0.0, 1.0))
+            + vec3(1.0) * spec * 0.3;
 
             gl_FragColor = vec4(color, 1.0);
         }
