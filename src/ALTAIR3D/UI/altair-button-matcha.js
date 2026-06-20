@@ -134,8 +134,8 @@ export class ButtonMatcha {
                 shader.fragmentShader = shader.fragmentShader.replace(
                     '#include <color_fragment>',
                     `
-                    vec3 colorA = vec3(0.39, 1.00, 0.28);
-                    vec3 colorB = vec3(0.94, 0.94, 0.94);
+                    vec3 colorA = vec3(0.53, 1.00, 0.72);
+                    vec3 colorB = vec3(0.74, 0.74, 0.74);
     
                     float gradient =
                         sin(

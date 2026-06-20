@@ -1,5 +1,3 @@
-![logo-design](https://github.com/zzztzzzt/Altair-JS/blob/main/logo/design.webp)
-
 # Altair-JS
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/zzztzzzt/Altair-JS.svg)

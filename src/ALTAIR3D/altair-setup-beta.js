@@ -52,9 +52,11 @@ export class AltairScene {
         renderer.setSize(div.getBoundingClientRect().width, div.getBoundingClientRect().height);
         
         // Tone mapping and exposure for HDR
-        renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 0.8;
-        renderer.outputColorSpace = THREE.SRGBColorSpace;
+        if (useEnvMap) {
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 0.8;
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+        }
         
         div.appendChild(renderer.domElement);
         this.renderer = renderer;

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import ringFlowerPink from '@models/ring-flower-pink.glb';
+import ringFlowerIvory from '@models/ring-flower-ivory.glb';
 
 export class ButtonFlowerRing {
     constructor(color = 0) {
@@ -11,7 +12,9 @@ export class ButtonFlowerRing {
         let colorTypeOne = {
             "model-ring-flower-path": ringFlowerPink,
         };
-        let colorTypeTwo = {};
+        let colorTypeTwo = {
+            "model-ring-flower-path": ringFlowerIvory,
+        };
         let colorCustom = {};
         this.colorTypeList = [colorTypeOne, colorTypeTwo, colorCustom];
 
@@ -114,7 +117,11 @@ export class ButtonFlowerRing {
 
     scaleSet(x, y, z) {}
 
-    positionSet(x, y, z) {}
+    positionSet(x, y, z) {
+        if (this.mainMesh) {
+            this.mainMesh.position.set(x, y, z);
+        }
+    }
 
     rotationSet(x, y, z) {}
 }
