@@ -15,7 +15,7 @@ export class CursorTrailMatcha {
         let colorCustom = {};
         this.colorTypeList = [colorTypeOne, colorTypeTwo, colorCustom];
 
-        const MAX_LEAVES = 20;
+        const MAX_LEAVES = 50;
         const MIN_LEAF_DISTANCE = 0.3;
 
         // 2. Meshes

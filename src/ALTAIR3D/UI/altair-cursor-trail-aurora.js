@@ -20,7 +20,7 @@ export class CursorTrailAurora {
         this.colorTypeList = [colorTypeOne, colorTypeTwo, colorCustom];
         const palette = this.colorTypeList[color] || this.colorTypeList[0];
 
-        this.trailHistory = Array(45).fill().map(() => new THREE.Vector3());
+        this.trailHistory = Array(80).fill().map(() => new THREE.Vector3());
         this.smoothedVelocity = new THREE.Vector3();
 
         this.target = new THREE.Vector3();

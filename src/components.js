@@ -5,6 +5,7 @@ export { ButtonAurora } from "@altair3d/UI/altair-button-aurora.js";
 export { ButtonRadiant } from "@altair3d/UI/altair-button-radiant.js";
 export { ButtonMatcha } from "@altair3d/UI/altair-button-matcha.js";
 export { ButtonCubeSwarm } from "@altair3d/UI/altair-button-cube-swarm.js";
+export { ButtonSpiralCylinder } from "@altair3d/UI/altair-button-spiral-cylinder.js";
 
 export { ClickTrackingStellar } from "@altair3d/UI/altair-click-tracking-stellar.js";
 export { ClickTrackingLilac } from "@altair3d/UI/altair-click-tracking-lilac.js";
